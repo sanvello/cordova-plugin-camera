@@ -57,6 +57,11 @@
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.CAMERA" />
+            <queries>
+                <intent>
+                    <action android:name="android.media.action.IMAGE_CAPTURE" />
+                </intent>
+            </queries>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="application">
           <provider

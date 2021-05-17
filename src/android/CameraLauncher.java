@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
@@ -551,6 +552,7 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
                         Uri imageUri = this.imageUri;
                         writeUncompressedImage(imageUri, uri);
                     }
+                    this.cordova.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
                     this.callbackContext.success(uri.toString());
                 }
@@ -696,6 +698,8 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
             // If you ask for video or the selected file doesn't have JPEG or PNG mime type
             //  there will be no attempt to resize any returned data
             if (this.mediaType == VIDEO || !(JPEG_MIME_TYPE.equalsIgnoreCase(mimeType) || PNG_MIME_TYPE.equalsIgnoreCase(mimeType))) {
+                this.cordova.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
                 this.callbackContext.success(finalLocation);
             }
             else {
@@ -706,6 +710,8 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
                         destType == FILE_URI && !this.correctOrientation &&
                         mimeType != null && mimeType.equalsIgnoreCase(getMimetypeForFormat(encodingType)))
                 {
+                    this.cordova.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
                     this.callbackContext.success(finalLocation);
                 } else {
                     Bitmap bitmap = null;
@@ -736,6 +742,8 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
                                 String modifiedPath = this.outputModifiedBitmap(bitmap, uri);
                                 // The modified image is cached by the app in order to get around this and not have to delete you
                                 // application cache I'm adding the current system time to the end of the file url.
+                                this.cordova.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
                                 this.callbackContext.success("file://" + modifiedPath + "?" + System.currentTimeMillis());
 
                             } catch (Exception e) {
@@ -743,6 +751,8 @@ public class CameraLauncher extends CordovaPlugin implements MediaScannerConnect
                                 this.failPicture("Error retrieving image.");
                             }
                         } else {
+                            this.cordova.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                            
                             this.callbackContext.success(finalLocation);
                         }
                     }
